@@ -23,7 +23,7 @@ public class TerrainRenderer {
 	public void render()
 	{
 		debugRenderer.setProjectionMatrix(cam.combined);
-		debugRenderer.begin(ShapeType.Rectangle);
+		debugRenderer.begin(ShapeType.FilledRectangle);
 		for(TerrainTile[] tileArray : generator.getTiles())
 		{
 			for(TerrainTile tile : tileArray)
@@ -32,7 +32,7 @@ public class TerrainRenderer {
 				float x1 = tile.getPosition().x + rect.x;
 				float y1 = tile.getPosition().y + rect.y;
 				debugRenderer.setColor(tile.getColor());
-				debugRenderer.rect(x1,y1,rect.width,rect.height);
+				debugRenderer.filledRect(x1,y1,rect.width,rect.height);
 			}
 		}
 		debugRenderer.end();

@@ -9,12 +9,17 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
+import com.wkingtechrts.mygdxgame.terrain.TerrainRenderer;
 
 public class TechGDX implements ApplicationListener {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
+	
+	private TerrainGenerator gen;
+	private TerrainRenderer renderer;
 	
 	@Override
 	public void create() {		
@@ -24,6 +29,7 @@ public class TechGDX implements ApplicationListener {
 		camera = new OrthographicCamera(1, h/w);
 		batch = new SpriteBatch();
 		
+		camera.zoom = 0.1f;
 		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
@@ -33,6 +39,9 @@ public class TechGDX implements ApplicationListener {
 		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		
+		gen = new TerrainGenerator();
+		renderer = new TerrainRenderer(gen);
 	}
 
 	@Override
@@ -46,10 +55,8 @@ public class TechGDX implements ApplicationListener {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		sprite.draw(batch);
-		batch.end();
+		renderer.render();
+	
 	}
 
 	@Override
