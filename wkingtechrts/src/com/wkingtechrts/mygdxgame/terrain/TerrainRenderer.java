@@ -37,4 +37,15 @@ public class TerrainRenderer {
 		}
 		debugRenderer.end();
 	}
+	
+	public void zoomOut()
+	{
+		cam.zoom += 0.02f;
+		cam.update();
+	}
+	public void zoomIn()
+	{
+		cam.zoom -= 0.05f;
+		cam.update();
+	}
 }
