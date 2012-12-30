@@ -24,14 +24,16 @@ public class TechGDX implements ApplicationListener {
 	@Override
 	public void create() {
 		
-		gd = new GestureDetector(new TechGestureListener());
-		Gdx.input.setInputProcessor(gd);
+	
 		
 		Gdx.graphics.setContinuousRendering(false);
 		
 		gen = new TerrainGenerator();
 		renderer = new TerrainRenderer(gen);
 		Gdx.graphics.requestRendering();
+		
+		gd = new GestureDetector(new TechGestureListener(renderer.getCamera()));
+		Gdx.input.setInputProcessor(gd);
 	}
 
 	@Override

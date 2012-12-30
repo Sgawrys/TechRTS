@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class TerrainGenerator {
 	
-	public static final int MAPSIZEX = 128;
-	public static final int MAPSIZEY = 128;
+	public static final int MAPSIZEX = 256;
+	public static final int MAPSIZEY = 256;
 	
 	public TerrainTile[][] tileMap = new TerrainTile[MAPSIZEX][MAPSIZEY];
 	

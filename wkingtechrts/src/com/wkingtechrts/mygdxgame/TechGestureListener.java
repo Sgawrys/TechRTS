@@ -1,11 +1,20 @@
 package com.wkingtechrts.mygdxgame;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Gdx;
 
 public class TechGestureListener implements GestureListener {
 
+	private OrthographicCamera cam;
+	
+	public TechGestureListener(OrthographicCamera camera)
+	{
+		this.cam = camera;
+	}
+	
+	
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		// TODO Auto-generated method stub
@@ -33,6 +42,11 @@ public class TechGestureListener implements GestureListener {
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
 		// TODO Auto-generated method stub
+		cam.position.x += deltaX/(cam.viewportWidth * cam.zoom);
+		cam.position.y -= deltaY/(cam.viewportWidth * cam.zoom);
+		System.out.println("("+x+","+y+") DeltaX:"+deltaX+","+deltaY);
+		cam.update();
+		Gdx.graphics.requestRendering();
 		return false;
 	}
 

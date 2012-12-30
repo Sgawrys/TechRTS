@@ -64,6 +64,7 @@ public class TerrainRenderer {
 		int endX = startX + (int)((cam.viewportWidth*cam.zoom)+1.0f);
 		int endY = startY + (int)((cam.viewportWidth*cam.zoom)+1.0f);
 		
+		System.out.println("("+startX+","+startY+")   --  ("+endX+","+endY+")");
 		if(startX < 0)
 			startX = 0;
 		if(startY < 0)
@@ -94,12 +95,20 @@ public class TerrainRenderer {
 	
 	public void zoomOut()
 	{
-		cam.zoom += 1.0f;
-		cam.update();
+		if(cam.zoom < 4.0f)
+		{
+			cam.zoom += 1.0f;
+			cam.update();
+		}
 	}
 	public void zoomIn()
 	{
 		cam.zoom -= 1.0f;
 		cam.update();
+	}
+	
+	public OrthographicCamera getCamera()
+	{
+		return cam;
 	}
 }
