@@ -22,16 +22,16 @@ public class TechGDX implements ApplicationListener {
 	private GestureDetector gd;
 	
 	@Override
-	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+	public void create() {
 		
 		gd = new GestureDetector(new TechGestureListener());
-		
 		Gdx.input.setInputProcessor(gd);
+		
+		Gdx.graphics.setContinuousRendering(false);
 		
 		gen = new TerrainGenerator();
 		renderer = new TerrainRenderer(gen);
+		Gdx.graphics.requestRendering();
 	}
 
 	@Override
@@ -42,15 +42,10 @@ public class TechGDX implements ApplicationListener {
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+ 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		renderer.render();
 		if(gd.isLongPressed())
-		{
-			renderer.zoomIn();
-		}else{
 			renderer.zoomOut();
-		}
 	}
 
 	@Override

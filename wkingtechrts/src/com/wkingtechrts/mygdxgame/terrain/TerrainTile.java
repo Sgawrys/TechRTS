@@ -13,6 +13,8 @@ public class TerrainTile {
 	Rectangle bounds = new Rectangle();
 	Color color = new Color();
 	
+	private boolean isChanged;
+	
 	public TerrainTile(Vector2 pos, Color type)
 	{
 		this.position = pos;
@@ -34,5 +36,15 @@ public class TerrainTile {
 	public Color getColor()
 	{
 		return color;
+	}
+	
+	public boolean getChange()
+	{
+		return isChanged;
+	}
+	
+	public void setChange(boolean b)
+	{
+		isChanged = b;
 	}
 }
