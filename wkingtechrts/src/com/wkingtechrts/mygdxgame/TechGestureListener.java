@@ -42,8 +42,8 @@ public class TechGestureListener implements GestureListener {
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
 		// TODO Auto-generated method stub
-		cam.position.x += deltaX/(cam.viewportWidth * cam.zoom);
-		cam.position.y -= deltaY/(cam.viewportHeight * cam.zoom);
+		cam.position.x -= deltaX/(cam.viewportWidth * cam.zoom);
+		cam.position.y += deltaY/(cam.viewportHeight * cam.zoom);
 		System.out.println("("+x+","+y+") DeltaX:"+deltaX+","+deltaY);
 		cam.update();
 		Gdx.graphics.requestRendering();
