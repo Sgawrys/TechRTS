@@ -12,7 +12,7 @@ public class TerrainGenerator {
 	public static final int MAPSIZEX = 256;
 	public static final int MAPSIZEY = 256;
 	
-	public TerrainTile[][] tileMap = new TerrainTile[MAPSIZEX][MAPSIZEY];
+	public static TerrainTile[][] tileMap = new TerrainTile[MAPSIZEX][MAPSIZEY];
 	
 	
 	public TerrainGenerator()
@@ -27,28 +27,38 @@ public class TerrainGenerator {
 			{
 				float perlinVal = perlinNoise[i][j];
 				Vector2 tilePos = new Vector2(i,j);
-				
+				short pre = 0;
 				Color tileCol = new Color();
 				
 				
 				float rand = 0.0f;
 				
 				if(perlinVal <= .5f)
+				{
 					tileCol = new Color(.278f, .431f+rand, .929f, 1);
-				
+					pre = 0;
+				}
 				if(perlinVal > .5f && perlinVal <= .65f)
+				{
 					tileCol = new Color(.262f, .650f+rand, .156f, 1);
-				
+					pre = 1;
+				}
 				if(perlinVal > .65f && perlinVal <= .7f)
+				{
 					tileCol = new Color(.125f+rand, .419f, .047f, 1);
-				
+					pre = 2;
+				}
 				if(perlinVal > .7f && perlinVal <= .85f)
+				{
 					tileCol = new Color(.93f, .768f, .278f+rand, 1);
-				
+					pre = 3;
+				}
 				if(perlinVal > .85f)
+				{
 					tileCol = new Color(.85f, .509f, .168f+rand, 1);
-				
-				tileMap[i][j] = new TerrainTile(tilePos, tileCol);
+					pre = 4;
+				}
+				tileMap[i][j] = new TerrainTile(tilePos, tileCol, pre);
 			}
 		}
 	}
