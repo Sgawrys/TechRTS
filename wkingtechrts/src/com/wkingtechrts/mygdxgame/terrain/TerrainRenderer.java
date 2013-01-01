@@ -26,6 +26,7 @@ public class TerrainRenderer {
 		this.generator = gen;
 		this.cam = new OrthographicCamera(10,7);
 		this.cam.position.set(gen.getMapsizeX()/2.0f,gen.getMapsizeY()/2.0f,0);
+		this.cam.zoom = 4.0f;
 		this.cam.update();
 		
 		this.tileMap = generator.getTiles();
