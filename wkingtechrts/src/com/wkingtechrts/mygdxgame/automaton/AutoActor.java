@@ -1,5 +1,6 @@
 package com.wkingtechrts.mygdxgame.automaton;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,7 +21,7 @@ public class AutoActor extends Actor {
 	private Vector2 position;
 	private LinkedList<Node> path;
 	private int currentPathIndex;
-	
+	private boolean debug = true;
 	/*Cost for moving orthogonal, and cost for moving diagonal*/
 	private int d = 10;
 	private int dx = 14;
@@ -81,7 +82,7 @@ public class AutoActor extends Actor {
 		
 		start.fcost = g+f;
 		
-		LinkedList<Node> open = new LinkedList<Node>();
+		PriorityQueue<Node> open = new PriorityQueue<Node>();
 		LinkedList<Node> closed = new LinkedList<Node>();
 		open.add(start);
 		
@@ -90,16 +91,8 @@ public class AutoActor extends Actor {
 		
 		while(!open.isEmpty())
 		{
-			Node current = null;
-			for(Node n : open)
-			{
-				if(current == null)
-					current = n;
-				
-				if(n.fcost < current.fcost)
-					current = n;
-			}
-			open.remove(current);
+			Node current = open.poll();
+			
 			closed.add(current);
 			if(current.x() == goal.x() && current.y() == goal.y())
 			{
@@ -116,7 +109,8 @@ public class AutoActor extends Actor {
 			
 			for(Node n : neighborNodes)
 			{
-				
+				if(debug)
+					TerrainGenerator.tileMap[n.x()][n.y()].setColor(new Color(.968f,.388f,.823f,1.0f));
 
 				double est = current.cost + distance(current,n);
 				
@@ -158,6 +152,8 @@ public class AutoActor extends Actor {
 					open.add(n);
 				}
 			}
+			if(debug)
+				TerrainGenerator.tileMap[current.x()][current.y()].setColor(new Color(.807f,.2f,.839f,1.0f));
 		}
 	}
 	
@@ -202,9 +198,18 @@ public class AutoActor extends Actor {
 	public LinkedList<Node> rebuildPath(LinkedList<Node> list)
 	{
 		LinkedList<Node> finalPath = new LinkedList<Node>();
+		if(debug)
+		{
+			for(Node n : list)
+			{
+				TerrainGenerator.tileMap[n.x()][n.y()].setColor(new Color(.701f,.168f,.701f,1.0f));
+			}
+		}
 		Node search = list.removeLast();
 		while(search.parent != null)
 		{
+			if(debug)
+				TerrainGenerator.tileMap[search.x()][search.y()].setColor(new Color(1.0f,1.0f,0.0f,1.0f));
 			finalPath.addFirst(search);
 			search = search.parent;
 		}
