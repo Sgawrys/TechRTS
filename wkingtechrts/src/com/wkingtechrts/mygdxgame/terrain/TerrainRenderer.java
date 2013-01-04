@@ -62,8 +62,8 @@ public class TerrainRenderer {
 		*/
 		int startX = (int)(cam.position.x-((cam.viewportWidth*cam.zoom)/(2.0f)));
 		int startY = (int)(cam.position.y-((cam.viewportHeight*cam.zoom)/(2.0f)));
-		int endX = startX + (int)((cam.viewportWidth*cam.zoom)+1.0f);
-		int endY = startY + (int)((cam.viewportHeight*cam.zoom)+1.0f);
+		int endX = startX + (int)((cam.viewportWidth*cam.zoom)+2.0f);
+		int endY = startY + (int)((cam.viewportHeight*cam.zoom)+2.0f);
 		
 		//System.out.println("("+startX+","+startY+")   --  ("+endX+","+endY+")");
 		if(startX < 0)
