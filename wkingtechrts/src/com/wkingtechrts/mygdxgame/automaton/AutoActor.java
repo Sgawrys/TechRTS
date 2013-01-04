@@ -108,7 +108,7 @@ public class AutoActor extends Actor {
 				{
 					System.out.println("Path found: "+temp.x()+","+temp.y());
 				}
-				path = closed;
+				path = rebuildPath(closed);
 				return;
 			}
 			
@@ -116,6 +116,10 @@ public class AutoActor extends Actor {
 			
 			for(Node n : neighborNodes)
 			{
+				
+
+				double est = current.cost + distance(current,n);
+				
 				Iterator<Node> closeIt = closed.iterator();
 				boolean cont = false;
 				while(closeIt.hasNext())
@@ -129,7 +133,6 @@ public class AutoActor extends Actor {
 				if(cont)
 					continue;
 				
-				double est = current.cost + distance(current,n);
 				
 				Iterator<Node> openIt = open.iterator();
 				boolean found = false;
@@ -139,15 +142,20 @@ public class AutoActor extends Actor {
 					if(temp.x() == n.x() && temp.y() == n.y())
 					{
 						found = true;
+						if(temp.cost >= n.cost)
+						{
+							n.parent = current;
+							n.cost = est;
+							n.fcost = n.cost + heuristicCost(n,goal);
+						}
 					}
 				}
-				if(!found || est <= n.cost)
+				if(!found)
 				{
 					n.parent = current;
 					n.cost = est;
 					n.fcost = n.cost + heuristicCost(n,goal);
-					if(!found)
-						open.add(n);
+					open.add(n);
 				}
 			}
 		}
@@ -175,6 +183,9 @@ public class AutoActor extends Actor {
 		{
 			for(int p = -1; p < 2; p++)
 			{
+				if(TerrainGenerator.tileMap[center.x()+i][center.y()+p].isWalkable() == 0)
+					continue;
+				
 				if(i == 0 && p == 0)
 				{
 				}else{
@@ -186,6 +197,18 @@ public class AutoActor extends Actor {
 			}
 		}
 		return nodes;
+	}
+	
+	public LinkedList<Node> rebuildPath(LinkedList<Node> list)
+	{
+		LinkedList<Node> finalPath = new LinkedList<Node>();
+		Node search = list.removeLast();
+		while(search.parent != null)
+		{
+			finalPath.addFirst(search);
+			search = search.parent;
+		}
+		return finalPath;
 	}
 }
 

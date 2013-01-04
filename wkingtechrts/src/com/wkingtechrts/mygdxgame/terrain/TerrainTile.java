@@ -14,15 +14,15 @@ public class TerrainTile {
 	Color color = new Color();
 	
 	private boolean isChanged;
-	private short precedence;
+	private int walkable;
 	
-	public TerrainTile(Vector2 pos, Color type, short p)
+	public TerrainTile(Vector2 pos, Color type, int walk)
 	{
 		this.position = pos;
 		this.bounds.width = SIZE;
 		this.bounds.height = SIZE;
 		this.color = type;
-		this.precedence = p;
+		this.walkable = walk;
 	}
 	
 	public Rectangle getBounds()
@@ -55,8 +55,8 @@ public class TerrainTile {
 		isChanged = b;
 	}
 	
-	public short getPrecedence()
+	public int isWalkable()
 	{
-		return precedence;
+		return walkable;
 	}
 }
