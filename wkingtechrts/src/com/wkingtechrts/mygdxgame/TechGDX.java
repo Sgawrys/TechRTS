@@ -13,28 +13,31 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.wkingtechrts.mygdxgame.automaton.AutoActor;
 import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
+import com.wkingtechrts.mygdxgame.player.Player;
 import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
 import com.wkingtechrts.mygdxgame.terrain.TerrainRenderer;
 
 public class TechGDX implements ApplicationListener {
-	private OrthographicCamera camera;
 	
+	private OrthographicCamera camera;
 	private TerrainGenerator gen;
 	private TerrainRenderer renderer;
-	
 	private GestureDetector gd;
-	
 	private SpriteBatch batch;
 	private AutoActorRenderer actorRender;
+	private Player player;
+	
 	@Override
 	public void create() {
-		Gdx.graphics.setContinuousRendering(false);
+		//Gdx.graphics.setContinuousRendering(false);
 		
 		gen = new TerrainGenerator();
 		renderer = new TerrainRenderer(gen);
-		Gdx.graphics.requestRendering();
+		//Gdx.graphics.requestRendering();
 		
-		gd = new GestureDetector(new TechGestureListener(renderer.getCamera()));
+		player = new Player();
+		
+		gd = new GestureDetector(new TechGestureListener(renderer.getCamera(), player));
 		Gdx.input.setInputProcessor(gd);
 		
 		batch = new SpriteBatch();

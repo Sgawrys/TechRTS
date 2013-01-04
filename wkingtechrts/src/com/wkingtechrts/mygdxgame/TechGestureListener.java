@@ -6,15 +6,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Gdx;
+import com.wkingtechrts.mygdxgame.player.Player;
 import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
 
 public class TechGestureListener implements GestureListener {
 
 	private OrthographicCamera cam;
-
-	public TechGestureListener(OrthographicCamera camera)
+	private Player player;
+	
+	public TechGestureListener(OrthographicCamera camera, Player user)
 	{
 		this.cam = camera;
+		this.player = user;
 	}
 	
 	
@@ -37,13 +40,16 @@ public class TechGestureListener implements GestureListener {
 		int endY = startY + (int)((cam.viewportHeight*cam.zoom)+1.0f);
 		
 		int oX = (int) (x/width * ((cam.viewportWidth*cam.zoom)+1.0f));
-		int oY = (int) Math.abs((y-480)/height * (endY-startY));
+		int oY = (int) Math.abs((y-height)/height * (endY-startY));
 		System.out.println("Corner : (" + startX + "," + startY + ") End : (" + endX + "," + endY + ") Offset: ("+oX+","+oY+")  Actual: ("+x+","+y+")");
 		System.out.println("Height: "+height+" Width: "+width);
 		
-		
-		if(TerrainGenerator.tileMap != null)
-			TerrainGenerator.tileMap[startX+oX][startY+oY].setColor(new Color(1,0,0,1));
+		if(player.getMoney() >= 20)
+		{
+			if(TerrainGenerator.tileMap != null)
+				TerrainGenerator.tileMap[startX+oX][startY+oY].setColor(new Color(1,0,0,1));
+			player.setMoney(player.getMoney()-20);
+		}
 		return false;
 	}
 
@@ -72,7 +78,14 @@ public class TechGestureListener implements GestureListener {
 
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
-		// TODO Auto-generated method stub
+		float scalar = ((initialDistance-distance)/initialDistance);
+		System.out.println(scalar);
+		cam.zoom -= scalar;
+		if(cam.zoom <= 1.0f)
+			cam.zoom = 1.0f;
+		if(cam.zoom >= 16.0f)
+			cam.zoom = 16.0f;
+		cam.update();
 		return false;
 	}
 
