@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Gdx;
+import com.wkingtechrts.mygdxgame.automaton.AutoActor;
+import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
 import com.wkingtechrts.mygdxgame.player.Player;
 import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
 
@@ -47,7 +49,15 @@ public class TechGestureListener implements GestureListener {
 		if(player.getMoney() >= 20)
 		{
 			if(TerrainGenerator.tileMap != null)
-				TerrainGenerator.tileMap[startX+oX][startY+oY].setColor(new Color(1,0,0,1));
+			{
+				for(int i = -1; i < 2; i++)
+				{
+					for(int p = -1; p < 2; p++)
+					{
+						TerrainGenerator.tileMap[startX+oX+i][startY+oY+p].setColor(new Color(1,0,0,1));
+					}
+				}
+			}
 			player.setMoney(player.getMoney()-20);
 		}
 		return false;
@@ -56,6 +66,25 @@ public class TechGestureListener implements GestureListener {
 	@Override
 	public boolean longPress(float x, float y) {
 		// TODO Auto-generated method stub
+		int width = Gdx.graphics.getWidth();
+		int height = Gdx.graphics.getHeight();
+		
+		int startX = (int)(cam.position.x-((cam.viewportWidth*cam.zoom)/(2.0f)));
+		int startY = (int)(cam.position.y-((cam.viewportHeight*cam.zoom)/(2.0f)));
+		int endX = startX + (int)((cam.viewportWidth*cam.zoom)+1.0f);
+		int endY = startY + (int)((cam.viewportHeight*cam.zoom)+1.0f);
+		
+		int oX = (int) (x/width * ((cam.viewportWidth*cam.zoom)+1.0f));
+		int oY = (int) Math.abs((y-height)/height * (endY-startY));
+		
+		int goalNodeX = startX+oX;
+		int goalNodeY = startY+oY;
+		
+		System.out.println("Generating list");
+		for(AutoActor aa : AutoActorRenderer.actorList)
+		{
+			aa.generatePath(goalNodeX, goalNodeY);
+		}
 		return false;
 	}
 

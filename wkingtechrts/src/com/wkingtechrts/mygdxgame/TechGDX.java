@@ -36,13 +36,13 @@ public class TechGDX implements ApplicationListener {
 		//Gdx.graphics.requestRendering();
 		
 		player = new Player();
-		
 		gd = new GestureDetector(new TechGestureListener(renderer.getCamera(), player));
 		Gdx.input.setInputProcessor(gd);
 		
 		batch = new SpriteBatch();
 		
 		Texture t = new Texture(Gdx.files.internal("data/debug/actor.png"));
+
 		AutoActor aa = new AutoActor(128.0f,128.0f,t);
 		actorRender = new AutoActorRenderer(renderer.getCamera());
 		actorRender.addToRender(aa);

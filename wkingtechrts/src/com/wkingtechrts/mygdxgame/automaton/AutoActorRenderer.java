@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AutoActorRenderer {
 
-	private LinkedList<AutoActor> actorList;
+	public static LinkedList<AutoActor> actorList;
 	private OrthographicCamera camera;
 	
 	public AutoActorRenderer(OrthographicCamera cam)
@@ -26,6 +26,7 @@ public class AutoActorRenderer {
 			batch.begin();
 			for(AutoActor actor : actorList)
 			{
+				actor.moveToTile();
 				actor.getSprite().draw(batch);
 			}
 			batch.end();
