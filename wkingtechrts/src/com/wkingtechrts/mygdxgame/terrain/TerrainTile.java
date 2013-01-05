@@ -3,7 +3,6 @@ package com.wkingtechrts.mygdxgame.terrain;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.wkingtechrts.mygdxgame.automaton.Node;
 
 
 public class TerrainTile implements Comparable {

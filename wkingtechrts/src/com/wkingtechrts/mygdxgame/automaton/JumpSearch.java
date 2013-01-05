@@ -228,65 +228,69 @@ public class JumpSearch {
 			
 			int dx = (x-px)/Math.max(Math.abs(x-px), 1);
 			int dy = (y-py)/Math.max(Math.abs(y-py), 1);
-			
-			if(dx != 0 && dy != 0)
-			{
-				if(grid[x][y+dy].isWalkable())
-				{
-					neighbors.push(grid[x][y+dy]);
-				}
-				if(grid[x+dx][y].isWalkable())
-				{
-					neighbors.push(grid[x+dx][y]);
-				}
-				if(grid[x][y+dy].isWalkable() || grid[x+dx][y].isWalkable())
-				{
-					neighbors.push(grid[x+dx][y+dy]);
-				}
-				if(!grid[x-dx][y].isWalkable() && grid[x][y+dy].isWalkable())
-				{
-					neighbors.push(grid[x-dx][y+dy]);
-				}
-				if(!grid[x][y-dy].isWalkable() && grid[x+dx][y].isWalkable())
-				{
-					neighbors.push(grid[x+dx][y-dy]);
-				}
-			}else{
-				if(dx == 0)
+			try{
+				if(dx != 0 && dy != 0)
 				{
 					if(grid[x][y+dy].isWalkable())
 					{
-						if(grid[x][y+dy].isWalkable())
-						{
-							neighbors.push(grid[x][y+dy]);
-						}
-						if(!grid[x+1][y].isWalkable())
-						{
-							neighbors.push(grid[x+1][y+dy]);
-						}
-						if(!grid[x-1][y].isWalkable())
-						{
-							neighbors.push(grid[x-1][y+dy]);
-						}
+						neighbors.push(grid[x][y+dy]);
 					}
-				}else{
 					if(grid[x+dx][y].isWalkable())
 					{
+						neighbors.push(grid[x+dx][y]);
+					}
+					if(grid[x][y+dy].isWalkable() || grid[x+dx][y].isWalkable())
+					{
+						neighbors.push(grid[x+dx][y+dy]);
+					}
+					if(!grid[x-dx][y].isWalkable() && grid[x][y+dy].isWalkable())
+					{
+						neighbors.push(grid[x-dx][y+dy]);
+					}
+					if(!grid[x][y-dy].isWalkable() && grid[x+dx][y].isWalkable())
+					{
+						neighbors.push(grid[x+dx][y-dy]);
+					}
+				}else{
+					if(dx == 0)
+					{
+						if(grid[x][y+dy].isWalkable())
+						{
+							if(grid[x][y+dy].isWalkable())
+							{
+								neighbors.push(grid[x][y+dy]);
+							}
+							if(!grid[x+1][y].isWalkable())
+							{
+								neighbors.push(grid[x+1][y+dy]);
+							}
+							if(!grid[x-1][y].isWalkable())
+							{
+								neighbors.push(grid[x-1][y+dy]);
+							}
+						}
+					}else{
 						if(grid[x+dx][y].isWalkable())
 						{
-							neighbors.push(grid[x+dx][y]);
-						}
-						if(!grid[x][y+1].isWalkable())
-						{
-							neighbors.push(grid[x+dx][y+1]);
-						}
-						if(!grid[x][y-1].isWalkable())
-						{
-							neighbors.push(grid[x+dx][y-1]);
+							if(grid[x+dx][y].isWalkable())
+							{
+								neighbors.push(grid[x+dx][y]);
+							}
+							if(!grid[x][y+1].isWalkable())
+							{
+								neighbors.push(grid[x+dx][y+1]);
+							}
+							if(!grid[x][y-1].isWalkable())
+							{
+								neighbors.push(grid[x+dx][y-1]);
+							}
 						}
 					}
+					
 				}
-				
+			}catch(ArrayIndexOutOfBoundsException ar)
+			{
+				neighbors = getNeighbors(t);
 			}
 		}else{
 			neighbors = getNeighbors(t);
