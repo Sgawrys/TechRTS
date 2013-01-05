@@ -27,7 +27,7 @@ public class TerrainGenerator {
 			{
 				float perlinVal = perlinNoise[i][j];
 				Vector2 tilePos = new Vector2(i,j);
-				short pre = 0;
+				boolean walkable = false;
 				Color tileCol = new Color();
 				
 				
@@ -36,29 +36,29 @@ public class TerrainGenerator {
 				if(perlinVal <= .5f)
 				{
 					tileCol = new Color(.278f, .431f+rand, .929f, 1);
-					pre = 0;
+					walkable = false;
 				}
 				if(perlinVal > .5f && perlinVal <= .65f)
 				{
 					tileCol = new Color(.262f, .650f+rand, .156f, 1);
-					pre = 1;
+					walkable = true;
 				}
 				if(perlinVal > .65f && perlinVal <= .7f)
 				{
 					tileCol = new Color(.125f+rand, .419f, .047f, 1);
-					pre = 2;
+					walkable = true;
 				}
 				if(perlinVal > .7f && perlinVal <= .85f)
 				{
 					tileCol = new Color(.93f, .768f, .278f+rand, 1);
-					pre = 3;
+					walkable = true;
 				}
 				if(perlinVal > .85f)
 				{
 					tileCol = new Color(.85f, .509f, .168f+rand, 1);
-					pre = 4;
+					walkable = true;
 				}
-				tileMap[i][j] = new TerrainTile(tilePos, tileCol, pre);
+				tileMap[i][j] = new TerrainTile(tilePos, tileCol, walkable);
 			}
 		}
 	}

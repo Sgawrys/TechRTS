@@ -50,6 +50,12 @@ public class TechGDX implements ApplicationListener {
 
 	@Override
 	public void dispose() {
+		TerrainGenerator.tileMap = null;
+		for(AutoActor a : actorRender.actorList)
+		{
+			a.dispose();
+		}
+		batch.dispose();
 		
 	}
 

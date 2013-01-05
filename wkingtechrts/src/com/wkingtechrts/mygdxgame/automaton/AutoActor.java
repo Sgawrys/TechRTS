@@ -19,12 +19,12 @@ public class AutoActor extends Actor {
 	private Texture texture;
 	private Sprite sprite;
 	private Vector2 position;
-	private LinkedList<Node> path;
+	private LinkedList<TerrainTile> path;
 	private int currentPathIndex;
 	private boolean debug = true;
 	/*Cost for moving orthogonal, and cost for moving diagonal*/
-	private int d = 10;
-	private int dx = 14;
+	private int costLine = 10;
+	private int costDiag = 14;
 	
 	public AutoActor(float x, float y, Texture tex)
 	{
@@ -39,6 +39,11 @@ public class AutoActor extends Actor {
 		sprite.setPosition(position.x, position.y);
 		super.setX(x);
 		super.setY(y);
+	}
+	
+	public void dispose()
+	{
+		texture.dispose();
 	}
 	
 	public void setTexture(Texture newTex)
@@ -60,9 +65,9 @@ public class AutoActor extends Actor {
 	{
 		if(path!=null)
 		{
-			Node t = path.get(currentPathIndex);
-			sprite.setX(t.x());
-			sprite.setY(t.y());
+			TerrainTile t = path.get(currentPathIndex);
+			sprite.setX(t.getPosition().x);
+			sprite.setY(t.getPosition().y);
 			if(currentPathIndex < path.size()-1)
 			{
 				currentPathIndex++;
@@ -75,6 +80,35 @@ public class AutoActor extends Actor {
 	
 	public void generatePath(int x, int y)
 	{
+		Vector2 goal = new Vector2(x,y);
+		Vector2 start = new Vector2((int)sprite.getX(),(int)sprite.getY());
+		System.out.println("Running Jump Search");
+		JumpSearch js = new JumpSearch();
+		path = js.findPath(start, goal, TerrainGenerator.tileMap);
+		try{
+			
+			for(TerrainTile t : path)
+			{
+				t.setColor(new Color(1.0f,1.0f,0.0f,1.0f));
+				System.out.println("Tile at position ("+t.getPosition().x+","+t.getPosition().y+")");
+			}
+		}catch(NullPointerException npe)
+		{
+			System.out.println("PATH NOT FOUND.");
+		}
+		for(TerrainTile[] t: TerrainGenerator.tileMap)
+		{
+			for(TerrainTile tile : t)
+			{
+				tile.closed = false;
+				tile.opened = false;
+				tile.f = 0.0;
+				tile.g = 0.0;
+				tile.h = 0.0;
+				tile.parent = null;
+			}
+		}
+		/*
 		Node goal = new Node(x, y);
 		Node start = new Node((int)sprite.getX(), (int)sprite.getY(), 0);
 		double g = 0;
@@ -109,67 +143,74 @@ public class AutoActor extends Actor {
 			
 			for(Node n : neighborNodes)
 			{
-				if(debug)
-					TerrainGenerator.tileMap[n.x()][n.y()].setColor(new Color(.968f,.388f,.823f,1.0f));
-
-				double est = current.cost + distance(current,n);
-				
-				Iterator<Node> closeIt = closed.iterator();
-				boolean cont = false;
-				while(closeIt.hasNext())
-				{
-					Node temp = closeIt.next();
-					if(temp.x() == n.x() && temp.y() == n.y())
+				//Node jumpPoint = jump(n,current,goal);
+				//if(jumpPoint != null)
+				//{
+					if(debug)
+						TerrainGenerator.tileMap[n.x()][n.y()].setColor(new Color(.968f,.388f,.823f,1.0f));
+	
+					double est = current.cost + distance(current,n);
+					
+					Iterator<Node> closeIt = closed.iterator();
+					boolean cont = false;
+					while(closeIt.hasNext())
 					{
-						cont = true;
-					}
-				}
-				if(cont)
-					continue;
-				
-				
-				Iterator<Node> openIt = open.iterator();
-				boolean found = false;
-				while(openIt.hasNext())
-				{
-					Node temp = openIt.next();
-					if(temp.x() == n.x() && temp.y() == n.y())
-					{
-						found = true;
-						if(temp.cost >= n.cost)
+						Node temp = closeIt.next();
+						if(temp.x() == n.x() && temp.y() == n.y())
 						{
-							n.parent = current;
-							n.cost = est;
-							n.fcost = n.cost + heuristicCost(n,goal);
+							cont = true;
 						}
 					}
-				}
-				if(!found)
-				{
-					n.parent = current;
-					n.cost = est;
-					n.fcost = n.cost + heuristicCost(n,goal);
-					open.add(n);
+					if(cont)
+						continue;
+					
+					
+					Iterator<Node> openIt = open.iterator();
+					boolean found = false;
+					while(openIt.hasNext())
+					{
+						Node temp = openIt.next();
+						if(temp.x() == n.x() && temp.y() == n.y())
+						{
+							found = true;
+							if(temp.cost >= n.cost)
+							{
+								n.parent = current;
+								n.cost = est;
+								n.fcost = n.cost + heuristicCost(n,goal);
+							}
+						}
+					}
+					if(!found)
+					{
+						n.parent = current;
+						n.cost = est;
+						n.fcost = n.cost + heuristicCost(n,goal);
+						open.add(n);
+				//	}
 				}
 			}
 			if(debug)
 				TerrainGenerator.tileMap[current.x()][current.y()].setColor(new Color(.807f,.2f,.839f,1.0f));
-		}
+		}*/
 	}
 	
 	public double heuristicCost(Node cur, Node goal)
-	{
+	{	
+		
 		int hd = (int) Math.min(Math.abs(cur.x() - goal.x()), Math.abs(cur.y() - goal.y()));
 		int hs = (int) (Math.abs(cur.x() - goal.x()) + Math.abs(cur.y() - goal.y()));
-		return dx * hd + d*(hs + (2*hd));
+		double h = costDiag * hd + costLine*(hs + (2*hd));
+		//double h = costDiag * Math.max(Math.abs(cur.x() - goal.x()), Math.abs(cur.y()-goal.y()));
+		return h*(1.001);
 	}
 	
-	public int distance(Node dx, Node dy)
+	public double distance(Node dx, Node dy)
 	{
 		/*Diagonal check*/
 		if(Math.abs(dx.x() - dy.x()) == 1 && Math.abs(dx.y() - dy.y()) == 1)
-			return 14;
-		return 10;
+			return costDiag;
+		return costLine;
 	}
 	
 	public LinkedList<Node> getNeighbor(Node center)
@@ -179,7 +220,7 @@ public class AutoActor extends Actor {
 		{
 			for(int p = -1; p < 2; p++)
 			{
-				if(TerrainGenerator.tileMap[center.x()+i][center.y()+p].isWalkable() == 0)
+				if(!TerrainGenerator.tileMap[center.x()+i][center.y()+p].isWalkable())
 					continue;
 				
 				if(i == 0 && p == 0)
