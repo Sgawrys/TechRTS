@@ -11,9 +11,9 @@ public class Buildings {
 	public int y;
 	public boolean isSelected = false;
 	public BuildingType type;
-	
 	private Sprite sprite;
 	private Texture texture;
+	
 	
 	public Buildings(int posx, int posy, BuildingType bt)
 	{
@@ -25,7 +25,7 @@ public class Buildings {
 		{
 			case CASTLE:texture = new Texture(Gdx.files.internal("data/debug/buildings/castle.png"));break;
 			case RESOURCE:texture = new Texture(Gdx.files.internal("data/debug/buildings/farm.png"));break;
-					
+			case SPAWNERY:texture = new Texture(Gdx.files.internal("data/debug/buildings/archer.png"));break;
 			default:break;
 		}
 		TextureRegion tr = new TextureRegion(texture,0,0,texture.getWidth(),texture.getHeight());
@@ -33,6 +33,7 @@ public class Buildings {
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setSize(2, 2);
 		sprite.setPosition(x, y);
+		
 	}
 	
 	public boolean isSelected()

@@ -20,6 +20,9 @@ public class Player {
 	public boolean buildingMode = false;
 	
 	
+
+	private BuildingType currentBuild;
+	
 	public Player(BuildingsRender br, AutoActorRenderer aar)
 	{
 		buildingRender = br;
@@ -83,17 +86,23 @@ public class Player {
 		return buildingMode;
 	}
 	
+	public void buildSet(BuildingType bt)
+	{
+		currentBuild = bt;
+	}
+	
+	public BuildingType currentBuild()
+	{
+		return currentBuild;
+	}
+	
 	public void build(int x, int y)
 	{
 		System.out.println("Built building at ("+x+","+y+")");
-		double rand = Math.random();
-		Buildings b;
-		if(rand <= 0.5)
+		if(currentBuild != null)
 		{
-			 b = new Buildings(x,y,BuildingType.CASTLE);
-		}else{
-			 b = new Buildings(x,y,BuildingType.RESOURCE);
+			Buildings build = new Buildings(x,y,currentBuild);
+			buildingRender.addToRender(build);
 		}
-		buildingRender.addToRender(b);
 	}
 }

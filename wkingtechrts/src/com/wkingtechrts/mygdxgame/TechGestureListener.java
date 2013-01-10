@@ -9,7 +9,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.Gdx;
 import com.wkingtechrts.mygdxgame.automaton.AutoActor;
 import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
+import com.wkingtechrts.mygdxgame.buildings.BuildingType;
 import com.wkingtechrts.mygdxgame.menu.MenuRenderer;
+import com.wkingtechrts.mygdxgame.menu.MenuType;
 import com.wkingtechrts.mygdxgame.player.Player;
 import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
 
@@ -64,8 +66,40 @@ public class TechGestureListener implements GestureListener {
 		
 		
 		if(menu.isVisible())
-			if(menu.button.contains(x,y))
-				player.toggleBuilding();
+		{
+			if(menu.currentMenu() == MenuType.OPTIONS)
+			{
+				if(menu.activateBuilding.contains(x,y))
+				{
+					player.toggleBuilding();
+					menu.setMenuType(MenuType.BUILDINGS);
+					return false;
+				}
+			}
+			if(menu.currentMenu() == MenuType.BUILDINGS)
+			{
+				if(menu.buildFarms.contains(x,y))
+				{
+					player.buildSet(BuildingType.RESOURCE);
+					return false;
+				}
+				if(menu.buildCastles.contains(x,y))
+				{
+					player.buildSet(BuildingType.CASTLE);
+					return false;
+				}
+				if(menu.buildArcher.contains(x,y))
+				{
+					player.buildSet(BuildingType.SPAWNERY);
+					return false;
+				}
+				if(menu.returnButton.contains(x,y))
+				{
+					menu.setMenuType(MenuType.OPTIONS);
+					return false;
+				}
+			}
+		}
 		if(player.isBuilding())
 			player.build(tx,ty);
 		

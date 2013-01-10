@@ -73,7 +73,7 @@ public class TechGDX implements ApplicationListener {
 		renderer.render();
 		actorRender.render(batch);
 		buildingRender.render(batch);
-		menu.drawMenu();
+		menu.draw();
 	}
 
 	@Override
