@@ -6,13 +6,29 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 public class MainActivity extends AndroidApplication {
-    @Override
+    public TechGDX x;
+    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
         
-        initialize(new TechGDX(), cfg);
+        x = new TechGDX();
+        
+        initialize(x, cfg);
+    }
+    
+    public void onDestroy()
+    {
+    	x.dispose();
+    	super.onDestroy();
+    	System.exit(0);
+    }
+    
+    public void onBackPressed()
+    {
+    	System.exit(0);
+    	super.onBackPressed();
     }
 }

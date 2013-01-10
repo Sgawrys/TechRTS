@@ -1,7 +1,8 @@
 package com.wkingtechrts.mygdxgame.player;
 
 import com.wkingtechrts.mygdxgame.automaton.AutoActor;
-
+import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
+import com.wkingtechrts.mygdxgame.buildings.*;
 public class Player {
 
 	/* Resources held */
@@ -11,15 +12,18 @@ public class Player {
 	private int wood;
 	
 	/* Army created */
-	private AutoActor[] army;
+	private AutoActorRenderer actorRender;
 	
 	/*Buildings owned */
 	/*should have array or buildings*/
+	private BuildingsRender buildingRender;
 	public boolean buildingMode = false;
 	
 	
-	public Player()
+	public Player(BuildingsRender br, AutoActorRenderer aar)
 	{
+		buildingRender = br;
+		actorRender = aar;
 		this.money = 500;
 	}
 	
@@ -82,5 +86,14 @@ public class Player {
 	public void build(int x, int y)
 	{
 		System.out.println("Built building at ("+x+","+y+")");
+		double rand = Math.random();
+		Buildings b;
+		if(rand <= 0.5)
+		{
+			 b = new Buildings(x,y,BuildingType.CASTLE);
+		}else{
+			 b = new Buildings(x,y,BuildingType.RESOURCE);
+		}
+		buildingRender.addToRender(b);
 	}
 }

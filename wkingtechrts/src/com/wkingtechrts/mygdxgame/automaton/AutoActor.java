@@ -33,7 +33,6 @@ public class AutoActor extends Actor {
 		sprite = new Sprite(tr);
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setSize(2, 2);
-		sprite.setRotation(0);
 		sprite.setPosition(position.x, position.y);
 		super.setX(x);
 		super.setY(y);

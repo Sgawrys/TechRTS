@@ -39,11 +39,11 @@ public class TechGestureListener implements GestureListener {
 		
 		
 		Vector3 worldCoords = new Vector3(x,y,0);
-		cam.project(worldCoords);
+		cam.unproject(worldCoords);
 		
-		int tx = (int)x;
-		int ty = (int)y;
-		System.out.println(tx + " " + ty);
+		int tx = (int)worldCoords.x;
+		int ty = (int)worldCoords.y;
+		
 		/*int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		
@@ -67,7 +67,7 @@ public class TechGestureListener implements GestureListener {
 			if(menu.button.contains(x,y))
 				player.toggleBuilding();
 		if(player.isBuilding())
-			player.build(tx, ty);
+			player.build(tx,ty);
 		
 		return false;
 	}

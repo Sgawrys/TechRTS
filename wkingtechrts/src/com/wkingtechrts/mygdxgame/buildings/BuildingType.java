@@ -1,5 +1,7 @@
 package com.wkingtechrts.mygdxgame.buildings;
 
+import com.badlogic.gdx.Gdx;
+
 public enum BuildingType
 {
 	CASTLE(5,5),

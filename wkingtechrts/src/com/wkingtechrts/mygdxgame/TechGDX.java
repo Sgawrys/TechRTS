@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.wkingtechrts.mygdxgame.automaton.AutoActor;
 import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
+import com.wkingtechrts.mygdxgame.buildings.BuildingsRender;
 import com.wkingtechrts.mygdxgame.menu.MenuRenderer;
 import com.wkingtechrts.mygdxgame.player.Player;
 import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
@@ -26,6 +27,7 @@ public class TechGDX implements ApplicationListener {
 	private GestureDetector gd;
 	private SpriteBatch batch;
 	private AutoActorRenderer actorRender;
+	private BuildingsRender buildingRender;
 	private Player player;
 	private MenuRenderer menu;
 	
@@ -34,19 +36,22 @@ public class TechGDX implements ApplicationListener {
 		gen = new TerrainGenerator();
 		renderer = new TerrainRenderer(gen);
 		
-		player = new Player();
+
+		Texture t = new Texture(Gdx.files.internal("data/debug/actor.png"));
+
+		AutoActor aa = new AutoActor(128.0f,128.0f,t);
+		actorRender = new AutoActorRenderer(renderer.getCamera());
+		actorRender.addToRender(aa);
+		
+		buildingRender = new BuildingsRender(renderer.getCamera());
+		
+		player = new Player(buildingRender, actorRender);
 
 		menu = new MenuRenderer();
 		gd = new GestureDetector(new TechGestureListener(renderer.getCamera(), player, menu));
 		Gdx.input.setInputProcessor(gd);
 		
 		batch = new SpriteBatch();
-		
-		Texture t = new Texture(Gdx.files.internal("data/debug/actor.png"));
-
-		AutoActor aa = new AutoActor(128.0f,128.0f,t);
-		actorRender = new AutoActorRenderer(renderer.getCamera());
-		actorRender.addToRender(aa);
 		
 	}
 
@@ -67,6 +72,7 @@ public class TechGDX implements ApplicationListener {
  		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		renderer.render();
 		actorRender.render(batch);
+		buildingRender.render(batch);
 		menu.drawMenu();
 	}
 
