@@ -14,6 +14,9 @@ public class Player {
 	private AutoActor[] army;
 	
 	/*Buildings owned */
+	/*should have array or buildings*/
+	public boolean buildingMode = false;
+	
 	
 	public Player()
 	{
@@ -59,5 +62,25 @@ public class Player {
 	public void setWood(int w)
 	{
 		wood = w;
+	}
+	
+	public void toggleBuilding()
+	{
+		if(buildingMode)
+		{
+			buildingMode = false;
+		}else{
+			buildingMode = true;
+		}
+	}
+	
+	public boolean isBuilding()
+	{
+		return buildingMode;
+	}
+	
+	public void build(int x, int y)
+	{
+		System.out.println("Built building at ("+x+","+y+")");
 	}
 }

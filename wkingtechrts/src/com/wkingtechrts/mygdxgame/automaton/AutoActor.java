@@ -21,6 +21,8 @@ public class AutoActor extends Actor {
 	private Vector2 position;
 	private LinkedList<TerrainTile> path;
 	private int currentPathIndex;
+	private boolean isSelected;
+	
 	
 	public AutoActor(float x, float y, Texture tex)
 	{
@@ -105,5 +107,24 @@ public class AutoActor extends Actor {
 			}
 		}
 	}
+	
+	public void select()
+	{
+		isSelected = true;
+	}
+	
+	public void deselect()
+	{
+		isSelected = false;
+	}
+	
+	public boolean onScreen(int sx, int ex, int sy, int ey)
+	{
+		if(this.sprite.getX() >= sx && this.sprite.getX() <= ex)
+			if(this.sprite.getY() >= sy && this.sprite.getY() <= ey)
+				return true;
+		return false;
+	}
+
 }
 

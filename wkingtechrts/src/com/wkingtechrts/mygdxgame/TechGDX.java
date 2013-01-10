@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.wkingtechrts.mygdxgame.automaton.AutoActor;
 import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
+import com.wkingtechrts.mygdxgame.menu.MenuRenderer;
 import com.wkingtechrts.mygdxgame.player.Player;
 import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
 import com.wkingtechrts.mygdxgame.terrain.TerrainRenderer;
@@ -26,17 +27,17 @@ public class TechGDX implements ApplicationListener {
 	private SpriteBatch batch;
 	private AutoActorRenderer actorRender;
 	private Player player;
+	private MenuRenderer menu;
 	
 	@Override
 	public void create() {
-		//Gdx.graphics.setContinuousRendering(false);
-		
 		gen = new TerrainGenerator();
 		renderer = new TerrainRenderer(gen);
-		//Gdx.graphics.requestRendering();
 		
 		player = new Player();
-		gd = new GestureDetector(new TechGestureListener(renderer.getCamera(), player));
+
+		menu = new MenuRenderer();
+		gd = new GestureDetector(new TechGestureListener(renderer.getCamera(), player, menu));
 		Gdx.input.setInputProcessor(gd);
 		
 		batch = new SpriteBatch();
@@ -46,6 +47,7 @@ public class TechGDX implements ApplicationListener {
 		AutoActor aa = new AutoActor(128.0f,128.0f,t);
 		actorRender = new AutoActorRenderer(renderer.getCamera());
 		actorRender.addToRender(aa);
+		
 	}
 
 	@Override
@@ -64,8 +66,8 @@ public class TechGDX implements ApplicationListener {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
  		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		renderer.render();
-	
 		actorRender.render(batch);
+		menu.drawMenu();
 	}
 
 	@Override
