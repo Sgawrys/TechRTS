@@ -1,5 +1,6 @@
 package com.wkingtechrts.mygdxgame.player;
 
+import com.badlogic.gdx.utils.Timer;
 import com.wkingtechrts.mygdxgame.automaton.AutoActor;
 import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
 import com.wkingtechrts.mygdxgame.buildings.*;
@@ -10,6 +11,7 @@ public class Player {
 	private int food;
 	private int ore;
 	private int wood;
+	private int population;
 	
 	/* Army created */
 	private AutoActorRenderer actorRender;
@@ -18,7 +20,7 @@ public class Player {
 	/*should have array or buildings*/
 	private BuildingsRender buildingRender;
 	public boolean buildingMode = false;
-	
+	public boolean selectingMode = false;
 	
 
 	private BuildingType currentBuild;
@@ -27,7 +29,7 @@ public class Player {
 	{
 		buildingRender = br;
 		actorRender = aar;
-		this.money = 500;
+		this.money = 100000;
 	}
 	
 	/* Setters and Getters for the instance variables in Player */
@@ -38,7 +40,7 @@ public class Player {
 	
 	public void setMoney(int m)
 	{
-		money = m;
+		money += m;
 	}
 	
 	public int getFood()
@@ -48,7 +50,7 @@ public class Player {
 	
 	public void setfood(int f)
 	{
-		food = f;
+		food += f;
 	}
 	
 	public int getOre()
@@ -58,7 +60,7 @@ public class Player {
 	
 	public void setOre(int o)
 	{
-		ore = o;
+		ore += o;
 	}
 	
 	public int getWood()
@@ -68,7 +70,34 @@ public class Player {
 	
 	public void setWood(int w)
 	{
-		wood = w;
+		wood += w;
+	}
+	
+	public int getPopulation()
+	{
+		return population;
+	}
+	
+	public void setPopulation(int p)
+	{
+		population += p;
+	}
+	
+	public void toggleSelecting()
+	{
+		if(selectingMode)
+		{
+			selectingMode = false;
+		}else{
+			selectingMode = true;
+		}
+		
+		System.out.println("Selecting system on?: "+selectingMode);
+	}
+	
+	public boolean isSelecting()
+	{
+		return selectingMode;
 	}
 	
 	public void toggleBuilding()
@@ -98,11 +127,37 @@ public class Player {
 	
 	public void build(int x, int y)
 	{
+		if(currentBuild.getCost() > money)
+			return;
+		
+		for(Buildings b : BuildingsRender.buildingList)
+		{
+			if(b.boundingBox.contains(x, y))
+			{
+				return;
+			}
+		}
 		System.out.println("Built building at ("+x+","+y+")");
 		if(currentBuild != null)
 		{
 			Buildings build = new Buildings(x,y,currentBuild);
+			Timer.schedule(new BuildingTask(currentBuild, this), 0.0f, currentBuild.getInterval());
 			buildingRender.addToRender(build);
+			this.money -= currentBuild.getCost();
+		}
+	}
+	
+	public void select(int x, int y)
+	{
+		System.out.println("Inside the selection method.");
+		for(Buildings b : BuildingsRender.buildingList)
+		{
+			System.out.println("Trying to select at ("+x+","+y+") when top corner is ("+b.boundingBox.x+","+b.boundingBox.y+")"+b.boundingBox.width + " " + b.boundingBox.height);
+			if(b.contains(x,y))
+			{
+				System.out.println("Selecting building at("+x+","+y+")");
+				b.toggleSelect();
+			}
 		}
 	}
 }

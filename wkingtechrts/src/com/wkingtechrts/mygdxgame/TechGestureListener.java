@@ -64,7 +64,7 @@ public class TechGestureListener implements GestureListener {
 			/*Else check what is under the tap x,y coordinates for selecting units, placing buildings, etc...*/
 		
 		
-		
+		/*Menu switchthru system*/
 		if(menu.isVisible())
 		{
 			if(menu.currentMenu() == MenuType.OPTIONS)
@@ -73,6 +73,11 @@ public class TechGestureListener implements GestureListener {
 				{
 					player.toggleBuilding();
 					menu.setMenuType(MenuType.BUILDINGS);
+					return false;
+				}
+				if(menu.activateSelection.contains(x,y))
+				{
+					player.toggleSelecting();
 					return false;
 				}
 			}
@@ -100,8 +105,13 @@ public class TechGestureListener implements GestureListener {
 				}
 			}
 		}
+		
+		
 		if(player.isBuilding())
 			player.build(tx,ty);
+		
+		if(player.isSelecting())
+			player.select(tx,ty);
 		
 		return false;
 	}

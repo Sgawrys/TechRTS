@@ -3,6 +3,8 @@ package com.wkingtechrts.mygdxgame.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,11 +18,15 @@ public class MenuRenderer{
 	private int height;
 	private boolean visible;
 	public Rectangle activateBuilding;
+	public Rectangle activateSelection;
+	
 	public Rectangle buildFarms;
 	public Rectangle buildCastles;
 	public Rectangle buildArcher;
 	public Rectangle returnButton;
 	private MenuType currentMenu = MenuType.OPTIONS;
+	
+	/*Debug console should have a seperate class with own camera, and spritebatch? or pass spritebatch from main -- Needs testing*/
 	
 	public MenuRenderer()
 	{
@@ -30,6 +36,9 @@ public class MenuRenderer{
 		height = Gdx.graphics.getHeight();
 		
 		activateBuilding = new Rectangle(0,0,width/5,height/5);
+		activateSelection = new Rectangle(width/5,0,width/5,height/5);
+		
+		
 		buildFarms = new Rectangle(width/5,0,width/5,height/5);
 		buildCastles = new Rectangle(2 * width/5,0,width/5,height/5);
 		buildArcher = new Rectangle(3 * width/5,0,width/5,height/5);
@@ -63,6 +72,8 @@ public class MenuRenderer{
 			menuRender.begin(ShapeType.FilledRectangle);
 			menuRender.setColor(new Color(1.0f,0.0f,0.0f,1.0f));
 			menuRender.filledRect(activateBuilding.x,activateBuilding.y,activateBuilding.width,activateBuilding.height);
+			menuRender.setColor(new Color(0.0f,0.5f,0.5f,1.0f));
+			menuRender.filledRect(activateSelection.x,activateSelection.y,activateSelection.width,activateSelection.height);
 			menuRender.end();
 		}
 	}

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Buildings {
 
@@ -13,7 +14,7 @@ public class Buildings {
 	public BuildingType type;
 	private Sprite sprite;
 	private Texture texture;
-	
+	public Rectangle boundingBox;
 	
 	public Buildings(int posx, int posy, BuildingType bt)
 	{
@@ -34,6 +35,7 @@ public class Buildings {
 		sprite.setSize(2, 2);
 		sprite.setPosition(x, y);
 		
+		boundingBox = sprite.getBoundingRectangle();
 	}
 	
 	public boolean isSelected()
@@ -60,6 +62,14 @@ public class Buildings {
 	{
 		if(this.sprite.getX() >= sx && this.sprite.getX() <= ex)
 			if(this.sprite.getY() >= sy && this.sprite.getY() <= ey)
+				return true;
+		return false;
+	}
+	
+	public boolean contains(int x, int y)
+	{
+		if(this.boundingBox.x <= x &&  x <= this.boundingBox.x+this.boundingBox.width)
+			if(this.boundingBox.y <= y && y <= this.boundingBox.y+this.boundingBox.height)
 				return true;
 		return false;
 	}

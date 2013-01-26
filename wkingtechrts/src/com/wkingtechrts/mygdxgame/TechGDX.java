@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,6 +16,7 @@ import com.wkingtechrts.mygdxgame.automaton.AutoActor;
 import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
 import com.wkingtechrts.mygdxgame.buildings.BuildingsRender;
 import com.wkingtechrts.mygdxgame.menu.MenuRenderer;
+import com.wkingtechrts.mygdxgame.player.DebugText;
 import com.wkingtechrts.mygdxgame.player.Player;
 import com.wkingtechrts.mygdxgame.terrain.TerrainGenerator;
 import com.wkingtechrts.mygdxgame.terrain.TerrainRenderer;
@@ -30,8 +32,8 @@ public class TechGDX implements ApplicationListener {
 	private BuildingsRender buildingRender;
 	private Player player;
 	private MenuRenderer menu;
+	private DebugText text;
 	
-	@Override
 	public void create() {
 		gen = new TerrainGenerator();
 		renderer = new TerrainRenderer(gen);
@@ -53,9 +55,9 @@ public class TechGDX implements ApplicationListener {
 		
 		batch = new SpriteBatch();
 		
+	//	text = new DebugText(batch);
 	}
-
-	@Override
+	
 	public void dispose() {
 		TerrainGenerator.tileMap = null;
 		for(AutoActor a : actorRender.actorList)
@@ -66,7 +68,6 @@ public class TechGDX implements ApplicationListener {
 		
 	}
 
-	@Override
 	public void render() {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
  		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -74,17 +75,15 @@ public class TechGDX implements ApplicationListener {
 		actorRender.render(batch);
 		buildingRender.render(batch);
 		menu.draw();
+		
 	}
 
-	@Override
 	public void resize(int width, int height) {
 	}
 
-	@Override
 	public void pause() {
 	}
 
-	@Override
 	public void resume() {
 	}
 }
