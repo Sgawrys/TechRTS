@@ -31,8 +31,8 @@ public class Buildings {
 		}
 		TextureRegion tr = new TextureRegion(texture,0,0,texture.getWidth(),texture.getHeight());
 		sprite = new Sprite(tr);
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setSize(2, 2);
+		sprite.setOrigin(0,0);
+		sprite.setSize(2.0f, 2.0f);
 		sprite.setPosition(x, y);
 		
 		boundingBox = sprite.getBoundingRectangle();
@@ -68,9 +68,14 @@ public class Buildings {
 	
 	public boolean contains(int x, int y)
 	{
-		if(this.boundingBox.x <= x &&  x <= this.boundingBox.x+this.boundingBox.width)
-			if(this.boundingBox.y <= y && y <= this.boundingBox.y+this.boundingBox.height)
+		System.out.println("New box coords ("+x+","+y+") Bounding Box : ("+this.boundingBox.x+","+this.boundingBox.y+") + Size:"+this.boundingBox.width + " "+ this.boundingBox.height);
+
+		
+		if(this.boundingBox.x-1 <= x && x <= this.boundingBox.x + this.boundingBox.width)
+			if(this.boundingBox.y-1 <= y && y <= this.boundingBox.y + this.boundingBox.height)
 				return true;
 		return false;
+		
+		//Have to test for overlap better
 	}
 }

@@ -1,5 +1,6 @@
 package com.wkingtechrts.mygdxgame.player;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Timer;
 import com.wkingtechrts.mygdxgame.automaton.AutoActor;
 import com.wkingtechrts.mygdxgame.automaton.AutoActorRenderer;
@@ -129,10 +130,10 @@ public class Player {
 	{
 		if(currentBuild.getCost() > money)
 			return;
-		
+
 		for(Buildings b : BuildingsRender.buildingList)
 		{
-			if(b.boundingBox.contains(x, y))
+			if(b.contains(x, y))
 			{
 				return;
 			}

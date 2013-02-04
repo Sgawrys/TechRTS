@@ -33,6 +33,8 @@ public class TerrainGenerator {
 				
 				float rand = 0.0f;
 				
+				// TODO: modify this code to look at perlinNoise[i-1][j],
+				// perlinNoise[i][j+1], etc, for all four neighbors
 				if(perlinVal <= .5f)
 				{
 					tileCol = new Color(.278f, .431f+rand, .929f, 1);

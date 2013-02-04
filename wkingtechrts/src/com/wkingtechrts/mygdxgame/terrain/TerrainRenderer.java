@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class TerrainRenderer {
 	private TerrainGenerator generator;
 	private OrthographicCamera cam;
-
+	private boolean debug = true;
 	private LinkedList<TerrainTile> tileChanged = new LinkedList<TerrainTile>();
 	
 	private TerrainTile[][] tileMap;
@@ -73,6 +73,24 @@ public class TerrainRenderer {
 			}
 		}
 		debugRenderer.end();
+		
+		if(debug)
+		{
+			debugRenderer.begin(ShapeType.Rectangle);
+			for(int x = startX; x < endX; x++)
+			{
+				for(int y = startY; y < endY; y++)
+				{
+					tile = tileMap[x][y];
+					Rectangle rect = tile.getBounds();
+					float x1 = tile.getPosition().x + rect.x;
+					float y1 = tile.getPosition().y + rect.y;
+					debugRenderer.setColor(1.0f,0.0f,0.0f,1.0f);
+					debugRenderer.rect(x1,y1,rect.width,rect.height);
+				}
+			}
+			debugRenderer.end();
+		}
 	}
 	
 	public void zoomOut()
